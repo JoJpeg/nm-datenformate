@@ -1,76 +1,46 @@
 
 ArrayList<walker> walkers;
+int step = 50;
+int size = 50;
+
 
 void setup() {
-
-  size(500, 700);
-  walkers.add(new walker(width/2, height/2));
+  walkers = new ArrayList<walker>();
+  size(1300, 1000);
 }
 
 void draw() {
-  
-  for (int i = 0; i < walkers.size(); i++) {
+
+  for (int i = 0; i < walkers.size (); i++) {
     walkers.get(i).update();
   }
+  println(walkers.size());
 }
 
-void mouseClicked(){  
-  walkers.add(new walker(mouseX, mouseY));
-}
-  
-  
-class walker {
 
-  float offsetX;
-  float offsetY;
-  int x;
-  int y;
-  int offset;
-  int stepSize =4;
-
-  walker(int posx,int posy) {
-    x =  posx;
-    y =  posy;
-  }
-
-  void update() {  
-    generatePoint();
-  }
-
-  void generatePoint() {
-
-    stepSize = (int) random(30);
-    int newx = pointPos( random(-1, 1));
-    int newy = pointPos( random(-1, 1)); 
-
-
-    println(x +":"+ y +"  "+ newx + ":" + newy);
-    if (x+newx > 0 && x+newx < width && y+newy > 0 && y+newy < height) {
-
-      x += newx;
-      y += newy; 
-      stroke(frameCount/width/2, frameCount/height/9, frameCount/width/20);
-      strokeWeight(random(5, 10));
-      point(x, y);
+void mouseClicked() {
+  int gerastertX = mouseX;
+  int gerastertY = mouseY;
+  boolean imRaster = false;
+  while (imRaster==false)
+  {
+    if (gerastertX%step!=0) {
+      gerastertX = gerastertX -1;
+    } else if (gerastertY%step!=0) {
+      gerastertY = gerastertY -1;
     } else {
-
-      generatePoint();
+      imRaster = true;
     }
   }
+  walkers.add(new walker(gerastertX, gerastertY));
+}
 
-  int pointPos(float position) {
-
-    println(position);
-
-    if (position > 0) {
-      offset = stepSize;
-    } else {
-      offset = -stepSize;
-    }
-
-    return offset;
+void keyReleased() {
+  if ( key == 's') {
+    saveFrame("save-#####" + day());
   }
 }
+
 
 
 
